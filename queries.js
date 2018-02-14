@@ -6,9 +6,13 @@
 //     password: 'coffee',
 //     port: 1111
 // });
+const os = require('os');
+const hostname = os.hostname();
+const port = (hostname.indexOf('droplet') !== -1) ?
+    5432 : 1111;
 const cn = {
     host: 'localhost',
-    port: 1111,
+    port: port,
     database: 'coffee',
     user: 'coffee',
     password: 'coffee'
@@ -27,6 +31,7 @@ function getUsers(req, res, next) {
             });
         })
         .catch(err => {return next(err)});
+        console.log(os.hostname());
 }
 
 function getUser(req, res, next) {
