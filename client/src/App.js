@@ -5,27 +5,28 @@ import Main from './components/Main';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      users: []
-    };
-    this.loadUsers = this.loadUsers.bind(this);
+    
+    this.sendApi = this.sendApi.bind(this);
   }
   componentDidMount() {
     // this.callApi()
     // .then(res => this.setState({users: res.data}))
     // .catch(err => console.log(err));
   }
-  callApi = async () => {
-    const response = await fetch('/api/getUsers');
-    const body = await response.json();
-    if(response.status !== 200) throw Error(body.message);
-    return body;
+ 
+  sendApi(method, url, data){
+    return fetch(url, {
+      body: JSON.stringify(data),
+      cache: "no-cache",
+      headers: {
+        "content-type": "application/json"
+      },
+      method: method
+    })
+    .then(response => response.json())
+    .catch(err => {throw Error(err)});
   }
-  loadUsers() {
-    this.callApi()
-    .then(res => this.setState({users: res.data}))
-    .catch(err => console.log(err));
-  }
+
   render() {
     return (
       <div className="App">
@@ -34,7 +35,7 @@ class App extends Component {
         <Header/>
         </header>
         <div className="main-container">
-        <Main/>
+        <Main sendApi={this.sendApi}/>
         </div>
       </div>
     );

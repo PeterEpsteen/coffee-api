@@ -15,7 +15,7 @@ router.get('/api/getUsers', userController.getUsers);
 router.get('/api/getUser/:id', userController.getUser);
 router.put('/api/editUser', userController.editUser);
 router.post('/api/addUser', userController.addUser);
-router.delete('/api/deleteUser/:id', userController.deleteUser);
+router.delete('/api/deleteUser', userController.deleteUser);
 /*  Brews  */
 router.get('/api/getBrews', brewController.getBrews);
 router.get('/api/getBrew/:id', brewController.getBrew);

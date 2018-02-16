@@ -35,10 +35,19 @@ function addUser(req, res, next){
             message: 'inserted user: ' + req.body.username
         });
     })
-    .catch((err) => {return next(err);})
+    .catch((err) => {
+        return next(err);
+    });
 }
 function deleteUser(req, res, next) {
-
+    db.none('DELETE FROM users WHERE id = ${id}', req.body)
+    .then(()=> {
+        res.status(200).json({
+            status: "success",
+            message: "Deleted user: " + req.body.username
+        });
+    })
+    .catch( e => next(e));
 }
 function editUser(req, res, next){
 
