@@ -1,0 +1,66 @@
+
+body {
+  width: 100%;
+}
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 60px;
+  padding: 20px;
+  color: white;
+}
+nav {
+  color: white;
+}
+.main-container {
+  display: flex;
+  width: 80%;
+  margin: auto;
+}
+.main-container ul {
+  display: flex;
+  flex-direction: column;
+}
+thead td {
+  text-decoration: underline;
+}
+label {
+  display: flex;
+  flex-direction: column;
+}
+input{
+  margin-top: 10px;
+}
+ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+li:nth-child(1) {
+  margin-right: auto;
+}
+li {
+  margin-left: 10px;
+}
+ a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
