@@ -10,18 +10,33 @@ class Users extends React.Component {
             username: '',
             password: '',
             email: '',
+        },
+        login: {
+            username: '',
+            password: '',
+            email: '',
+        },
+        profile: {
+            username: '',
+            password: '',
+            email: '',
+            id: ''
         }
     };
     this.setActive = this.setActive.bind(this);
     this.setUserName = this.setUserName.bind(this);
     this.setUserEmail = this.setUserEmail.bind(this);
     this.setUserPassword = this.setUserPassword.bind(this);
+    this.setLoginUserName = this.setLoginUserName.bind(this);
+    this.setLoginPassword = this.setLoginPassword.bind(this);
     this.addUser = this.addUser.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.loginHere = this.loginHere.bind(this);
     }
     componentDidMount(){
         this.UserList();
     }
+
     addUser() {
         this.props.sendApi("POST", '/api/addUser', this.state.newUser)
         .then(res => {
@@ -32,14 +47,20 @@ class Users extends React.Component {
             })
         .catch(err => alert("Caught: "+ err));
     }
-
+    loginHere() {
+        var user = Object.assign(this.state.login);
+        this.props.logToParent(user)
+        .then(res => this.props.sendApi('POST', '/api/profile/'+res.id, {}))
+        .then(res => this.setState({profile: res.data}))
+        .catch(e => console.log(e));
+    }
+    
     deleteUser() {
         this.props.sendApi('DELETE', '/api/deleteUser', this.state.active)
         .then(res => {
             alert(res.message + res.status);
             this.setState({active: {}})
             this.UserList();
-
         })
         .catch(e => console.log(e));
     }
@@ -54,9 +75,19 @@ class Users extends React.Component {
         if(response.status !== 200) throw Error(body.message);
         return body;
       }
-      
+    
     setActive(e) {
         this.setState({active: e})
+    }
+    setLoginPassword(e) {
+        let oldUser = this.state.login;
+        oldUser.password = e.target.value;
+        this.setState({login: oldUser});
+    }
+    setLoginUserName(e){
+        let oldUser = this.state.login;
+        oldUser.username = e.target.value;
+        this.setState({login: oldUser});
     }
     setUserName(event) {
         let oldUser = this.state.newUser;
@@ -117,6 +148,33 @@ class Users extends React.Component {
                           <td><button onClick={this.deleteUser}>Delete User</button></td>
                       </tr>
                     </table>
+                    <h3>Logged in as: </h3>
+                    <table>
+                        <tr>
+                        <td>
+                            Username: 
+                        </td>
+                        <td>
+                        {this.state.profile.username}
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Email:
+                            </td>
+                            <td>
+                                {this.state.profile.email}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Password:
+                            </td>
+                            <td>
+                                {this.state.profile.password}
+                            </td>
+                        </tr>
+                    </table>
                 
                 </div>
                 
@@ -138,7 +196,18 @@ class Users extends React.Component {
                     <input value={this.state.newUser.email} onChange={this.setUserEmail} name="email" type="text"/></label>
                     <button onClick={this.addUser}> Add User </button>
                 </div>
-                <div className="col"></div>
+                <div className="col">
+                <h3>Login</h3>
+                    <label>
+                    Username 
+                    <input value={this.state.login.username} onChange={this.setLoginUserName} name="username" type="text"/>
+                    </label>
+                    <label htmlFor="">
+                    Password
+                    <input value={this.state.login.password} onChange={this.setLoginPassword} name="password" type="text"/></label>
+                    
+                    <button onClick={this.loginHere}> login </button>
+                </div>
             </div>
             </div>
         );
