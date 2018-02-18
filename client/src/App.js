@@ -7,7 +7,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: ""
+      token: "",
+      userID: 0
     };
     this.sendApi = this.sendApi.bind(this);
     this.login = this.login.bind(this);
@@ -23,6 +24,7 @@ class App extends Component {
       .then(res => {
         if(res.hasOwnProperty('token')) {
           this.setState({token: res.token});
+          this.setState({userID: res.id});
           resolve(res);
         }
       }).catch(err => {reject(err)});
@@ -58,7 +60,7 @@ class App extends Component {
         <Header/>
         </header>
         <div className="main-container">
-        <Main login={this.login} sendApi={this.sendApi}/>
+        <Main userID ={this.state.userID} token={this.state.token} login={this.login} sendApi={this.sendApi}/>
         </div>
       </div>
     );

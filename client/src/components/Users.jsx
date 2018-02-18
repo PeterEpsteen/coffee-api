@@ -35,6 +35,11 @@ class Users extends React.Component {
     }
     componentDidMount(){
         this.UserList();
+        this.callApi('/api/getUser/'+this.props.userID)
+        .then(res => {
+            if (res.data.hasOwnProperty('username'))
+            this.setState({profile: res.data});
+        }).catch(err => console.log(err));
     }
 
     addUser() {
@@ -65,12 +70,20 @@ class Users extends React.Component {
         .catch(e => console.log(e));
     }
     UserList(){
-        this.callApi()
+        this.callApi('/api/getUsers')
         .then(res => this.setState({users: res.data}))
         .catch(err => console.log(err));
     }
-    callApi = async () => {
-        const response = await fetch('/api/getUsers');
+    callApi = async (url) => {
+        var headers = new Headers({
+            "x-access-token": this.props.token
+        });
+        var init = {
+            method: "GET",
+            headers: headers
+        };
+        var myRequest = new Request(url, init);
+        const response = await fetch(myRequest);
         const body = await response.json();
         if(response.status !== 200) throw Error(body.message);
         return body;

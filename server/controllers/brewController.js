@@ -29,8 +29,8 @@ function getBrews(req, res, next) {
 }
 function addBrew(req, res, next) {
     db.none('INSERT INTO brew (user_id, brew_name, brew_date, '+
-    'brew_method, water_units, coffee_units, water_metric, coffee_metric, notes, grind, bloom_time, brew_time, tempature) VALUES (${user_id}, ${brew_name}, ${brew_date}, '+
-    '${brew_method}, ${water_units}, ${coffee_units}, ${water_metric}, ${coffee_metric}, ${notes}, ${grind}, ${bloom_time}, ${brew_time}, ${tempature})', req.body)
+    'brew_method, water_units, coffee_units, water_metric, coffee_metric, notes, grind, bloom_time, brew_time, temperature) VALUES (${user_id}, ${brew_name}, ${brew_date}, '+
+    '${brew_method}, ${water_units}, ${coffee_units}, ${water_metric}, ${coffee_metric}, ${notes}, ${grind}, ${bloom_time}, ${brew_time}, ${temperature})', req.body)
     .then( () => {
         res.status(200).json({
             status: 'Success',

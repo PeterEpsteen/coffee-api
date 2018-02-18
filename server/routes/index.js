@@ -11,24 +11,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/*  Users  */
-router.get('/api/getUsers', userController.getUsers);
-router.get('/api/getUser/:id', userController.getUser);
-router.put('/api/editUser', userController.editUser);
-router.post('/api/addUser', userController.addUser);
-router.delete('/api/deleteUser', userController.deleteUser);
-router.post('/api/login', userController.login)
-/*  Brews  */
-router.get('/api/getBrews', brewController.getBrews);
-router.get('/api/getBrew/:id', brewController.getBrew);
-router.put('/api/editBrew', brewController.editBrew);
-router.post('/api/addBrew', brewController.addBrew);
-router.delete('/api/deleteBrew/:id', brewController.deleteBrew);
-/*  Brew Comments  */
-router.get('/api/getBrewComments/:id', brewCommentsController.getBrewComments);
-router.put('/api/editBrewComment', brewCommentsController.editBrewComment);
-router.post('/api/addBrewComment', brewCommentsController.addBrewComment);
-router.delete('/api/deleteBrewComment/:id', brewCommentsController.deleteBrewComment);
+router.post('/api/login', userController.login);
+
 
 router.use((req, res, next) => {
   var token = req.body.token || req.query.token || req.headers["x-access-token"];
@@ -38,6 +22,7 @@ router.use((req, res, next) => {
         return res.json({success: false, message: "Failed authentication"});
       }
         else {
+          console.log("token verified: " + token);
           req.decoded = decoded;
           next();
         }
@@ -50,6 +35,27 @@ router.use((req, res, next) => {
     });
   }
 });
+
+/*  Brews  */
+router.get('/api/getBrews', brewController.getBrews);
+router.get('/api/getBrew/:id', brewController.getBrew);
+router.put('/api/editBrew', brewController.editBrew);
+router.post('/api/addBrew', brewController.addBrew);
+router.delete('/api/deleteBrew/:id', brewController.deleteBrew);
+
+/*  Users  */
+router.get('/api/getUsers', userController.getUsers);
+router.get('/api/getUser/:id', userController.getUser);
+router.put('/api/editUser', userController.editUser);
+router.post('/api/addUser', userController.addUser);
+router.delete('/api/deleteUser', userController.deleteUser);
+
+/*  Brew Comments  */
+router.get('/api/getBrewComments/:id', brewCommentsController.getBrewComments);
+router.put('/api/editBrewComment', brewCommentsController.editBrewComment);
+router.post('/api/addBrewComment', brewCommentsController.addBrewComment);
+router.delete('/api/deleteBrewComment/:id', brewCommentsController.deleteBrewComment);
+// Test to 
 router.post('/api/profile/:id', userController.getUser);
 
 module.exports = router;
