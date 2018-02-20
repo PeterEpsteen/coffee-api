@@ -127,6 +127,7 @@ class Users extends React.Component {
                     <thead>
                         <td>Username</td>
                     </thead>
+                    <tbody>
                     {this.state.users.map((e => {
                         let name = (this.state.active.id == e.id) ? 'active' : '';
                         return(
@@ -135,7 +136,10 @@ class Users extends React.Component {
                             </tr>
                         );
                     }), this)}
+                    </tbody>
+                    
                 </table>
+                <button onClick={this.UserList.bind(this)}>Update</button>
                 </div>
                 <div className="col">
                     <h3>Active User</h3>
@@ -222,6 +226,7 @@ class Users extends React.Component {
                     <button onClick={this.loginHere}> login </button>
                 </div>
             </div>
+
             </div>
         );
     }
