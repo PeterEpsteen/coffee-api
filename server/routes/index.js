@@ -6,10 +6,7 @@ var brewController = require('../controllers/brewController');
 var brewCommentsController = require('../controllers/brewCommentsController');
 var userController = require('../controllers/userController');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+
 
 router.post('/api/login', userController.login);
 
