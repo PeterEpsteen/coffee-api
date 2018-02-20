@@ -53,6 +53,7 @@ function addUser(req, res, next){
     });
     
 }
+
 function login(req, res, next){
     db.one('SELECT * FROM users WHERE username = ${username}', req.body)
     .then(data => {
@@ -98,5 +99,5 @@ module.exports = {
     deleteUser: deleteUser,
     getUsers: getUsers,
     editUser: editUser,
-    login: login
+    login: login,
 };
