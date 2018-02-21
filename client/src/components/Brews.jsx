@@ -27,7 +27,7 @@ export default class Brews extends React.Component {
     }
     componentDidMount(){
         if(this.props.token !== ""){
-            this.callApi('/api/getBrews')
+            this.callApi('/api/brews')
             .then(res => this.setState({brewList: res.data}))
             .catch(err => console.log(err));
         }
@@ -50,7 +50,7 @@ export default class Brews extends React.Component {
         let brew = this.state.brew;
         brew.brew_date = new Date();
         brew.user_id = this.props.userID;
-        this.props.sendApi('POST', '/api/addBrew', brew)
+        this.props.sendApi('POST', '/api/brews', brew)
         .then(res => alert(res.message))
         .catch(err => console.log(err));
     }

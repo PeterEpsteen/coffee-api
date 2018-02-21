@@ -35,7 +35,7 @@ class Users extends React.Component {
     }
     componentDidMount(){
         this.UserList();
-        this.callApi('/api/getUser/'+this.props.userID)
+        this.callApi('/api/users/'+this.props.userID)
         .then(res => {
             if (res.data.hasOwnProperty('username'))
             this.setState({profile: res.data});
@@ -43,7 +43,7 @@ class Users extends React.Component {
     }
 
     addUser() {
-        this.props.sendApi("POST", '/api/addUser', this.state.newUser)
+        this.props.sendApi("POST", '/api/users', this.state.newUser)
         .then(res => {
 
                 alert(res.message);
@@ -61,7 +61,7 @@ class Users extends React.Component {
     }
     
     deleteUser() {
-        this.props.sendApi('DELETE', '/api/deleteUser', this.state.active)
+        this.props.sendApi('DELETE', '/api/users', this.state.active)
         .then(res => {
             alert(res.message + res.status);
             this.setState({active: {}})
@@ -70,7 +70,7 @@ class Users extends React.Component {
         .catch(e => console.log(e));
     }
     UserList(){
-        this.callApi('/api/getUsers')
+        this.callApi('/api/users')
         .then(res => this.setState({users: res.data}))
         .catch(err => console.log(err));
     }

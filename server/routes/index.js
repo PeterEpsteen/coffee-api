@@ -7,8 +7,8 @@ var brewCommentsController = require('../controllers/brewCommentsController');
 var userController = require('../controllers/userController');
 
 
-router.post('/api/login', userController.login);
-router.post('/api/register', userController.addUser);
+router.post('/login', userController.login);
+router.post('/register', userController.addUser);
 
 
 router.use((req, res, next) => {
@@ -34,25 +34,25 @@ router.use((req, res, next) => {
 });
 
 /*  Brews  */
-router.get('/api/getBrews', brewController.getBrews);
-router.get('/api/getBrew/:id', brewController.getBrew);
-router.put('/api/editBrew', brewController.editBrew);
-router.post('/api/addBrew', brewController.addBrew);
-router.delete('/api/deleteBrew/:id', brewController.deleteBrew);
+router.get('/brews', brewController.getBrews);
+router.get('/brews/:id', brewController.getBrew);
+router.put('/brews', brewController.editBrew);
+router.post('/brews', brewController.addBrew);
+router.delete('/brews/:id', brewController.deleteBrew);
 
 /*  Users  */
-router.get('/api/getUsers', userController.getUsers);
-router.get('/api/getUser/:id', userController.getUser);
-router.put('/api/editUser', userController.editUser);
-router.post('/api/addUser', userController.addUser);
-router.delete('/api/deleteUser', userController.deleteUser);
+router.get('/users', userController.getUsers);
+router.get('/users/:id', userController.getUser);
+router.put('/users', userController.editUser);
+router.post('/users', userController.addUser);
+router.delete('/users', userController.deleteUser);
 
 /*  Brew Comments  */
-router.get('/api/getBrewComments/:id', brewCommentsController.getBrewComments);
-router.put('/api/editBrewComment', brewCommentsController.editBrewComment);
-router.post('/api/addBrewComment', brewCommentsController.addBrewComment);
-router.delete('/api/deleteBrewComment/:id', brewCommentsController.deleteBrewComment);
+router.get('/comments/:brewID', brewCommentsController.getBrewComments);
+router.put('/comments/:commentID', brewCommentsController.editBrewComment);
+router.post('/comments', brewCommentsController.addBrewComment);
+router.delete('/comments/:commentID', brewCommentsController.deleteBrewComment);
 // Test to 
-router.post('/api/profile/:id', userController.getUser);
+router.post('/profile/:id', userController.getUser);
 
 module.exports = router;
