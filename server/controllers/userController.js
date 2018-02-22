@@ -9,7 +9,7 @@ const saltRounds = 10;
 //----------User Information -------------------//
 function getUsers(req, res, next) {
 
-    db.any('SELECT * FROM users')
+    db.any('SELECT id, username FROM users')
         .then(data => {
             res.status(200).json({
                 status:'success',
@@ -22,16 +22,17 @@ function getUsers(req, res, next) {
 
 function getUser(req, res, next) {
     let userID = parseInt(req.params.id);
-    db.one('SELECT * FROM users where id = $1', userID)
+    db.one('SELECT id, username, points FROM users where id = $1', userID)
         .then(data => {
             res.status(200).json({
-                status:'success',
+                status:'success',   
                 data: data,
                 message: 'Connection working'
             });
         })
         .catch(err => {return next(err)});
 }
+
 function addUser(req, res, next){
     bcrypt.hash(req.body.password, saltRounds, function(err, hash){
         let user = {
@@ -68,7 +69,11 @@ function login(req, res, next){
                 res.status(200).json({
                     status: true,
                     token: token,
-                    id: data.id,
+                    user: {
+                        id: data.id,
+                        username: data.username,
+                        points: data.points
+                    },
                     message: "You got a token"
                 });
             }
