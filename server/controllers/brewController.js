@@ -40,6 +40,19 @@ function addBrew(req, res, next) {
     .catch(err => {return next(err);});
 }
 
+function getBrewsByUser(req, res, next) {
+    let userID = parseInt(req.params.userID);
+    db.any('SELECT * FROM brew WHERE user_id = $1', userID)
+    .then(data => {
+        res.status(200).json({
+            status:'success',
+            data: data,
+            message: 'Connection working'
+        });
+    })
+    .catch(err => {return next(err)});
+}
+
 function deleteBrew(req, res, next) {
 
 }
@@ -58,4 +71,5 @@ module.exports = {
     getBrews: getBrews,
     editBrew: editBrew,
     deleteBrew: deleteBrew,
+    getBrewsByUser: getBrewsByUser
 };

@@ -64,7 +64,7 @@ function login(req, res, next){
                     username: data.username
                 };
                 var token = jwt.sign(payload, req.app.get('superSecret'), {
-                    expiresIn: "1440m"
+                    expiresIn: "5d"
                 });
                 res.status(200).json({
                     status: true,
