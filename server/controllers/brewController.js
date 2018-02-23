@@ -41,7 +41,7 @@ function addBrew(req, res, next) {
 }
 
 function getBrewsByUser(req, res, next) {
-    let userID = parseInt(req.params.userID);
+    let userID = parseInt(req.params.id);
     db.any('SELECT * FROM brew WHERE user_id = $1', userID)
     .then(data => {
         res.status(200).json({
