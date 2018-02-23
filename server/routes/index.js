@@ -36,9 +36,11 @@ router.use((req, res, next) => {
 /*  Brews  */
 router.get('/brews', brewController.getBrews);
 router.get('/brews/:id', brewController.getBrew);
+router.get('/brews/user/:id', brewController.getBrewsByUser)
 router.put('/brews', brewController.editBrew);
 router.post('/brews', brewController.addBrew);
 router.delete('/brews/:id', brewController.deleteBrew);
+
 
 /*  Users  */
 router.get('/users', userController.getUsers);
