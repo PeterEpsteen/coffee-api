@@ -39,7 +39,7 @@ router.get('/brews/:id', brewController.getBrew);
 router.get('/brews', brewController.getBrews);
 router.put('/brews', brewController.editBrew);
 router.post('/brews', brewController.addBrew);
-router.delete('/brews', brewController.deleteBrew);
+router.delete('/brews/:userID/:brewName', brewController.deleteBrew);
 
 
 /*  Users  */
