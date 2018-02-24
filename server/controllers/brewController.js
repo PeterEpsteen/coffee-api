@@ -58,7 +58,7 @@ function deleteBrew(req, res, next) {
         user_id: parseInt(req.params.userID),
         brew_name: req.params.brewName
     };
-    db.result('DELETE FROM brew WHERE user_id = ${user_id} AND brew_name <> ${brew_name}', body)
+    db.result('DELETE FROM brew WHERE user_id = ${user_id} AND brew_name = ${brew_name}', body)
     .then((result)=> {
         res.status(200).json({
             status: "success",
