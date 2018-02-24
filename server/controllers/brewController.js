@@ -54,11 +54,15 @@ function getBrewsByUser(req, res, next) {
 }
 
 function deleteBrew(req, res, next) {
-    db.none('DELETE FROM brew WHERE user_id = ${user_id} AND brew_name = ${brew_name}', req.body)
+    let body = {
+        user_id: req.params.user_id,
+        brew_name: req.params.brew_name
+    };
+    db.none('DELETE FROM brew WHERE user_id = ${user_id} AND brew_name = ${brew_name}', body)
     .then(()=> {
         res.status(200).json({
             status: "success",
-            message: "Deleted brew: " + req.body["brew_name"]
+            message: "Deleted brew: " + body["brew_name"]
         });
     })
     .catch( e => next(e));
