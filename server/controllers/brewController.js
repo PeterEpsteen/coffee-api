@@ -55,8 +55,8 @@ function getBrewsByUser(req, res, next) {
 
 function deleteBrew(req, res, next) {
     let body = {
-        user_id: req.params.user_id,
-        brew_name: req.params.brew_name
+        user_id: req.params['user_id'],
+        brew_name: req.params['brew_name']
     };
     db.result('DELETE FROM brew WHERE user_id = ${user_id} AND brew_name = ${brew_name}', body)
     .then((result)=> {
