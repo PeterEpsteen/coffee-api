@@ -62,7 +62,7 @@ function deleteBrew(req, res, next) {
     .then((result)=> {
         res.status(200).json({
             status: "success",
-            message: result.rows
+            message: result.command
         });
     })
     .catch( e => next(e));
