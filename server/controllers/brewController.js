@@ -98,7 +98,10 @@ function likeBrew(req, res, next) {
             message: events
         });
     })
-    .catch(error => next(error))
+    .catch(error => {
+        console.log(error);
+        return next(error);
+    })
    
 }
 
