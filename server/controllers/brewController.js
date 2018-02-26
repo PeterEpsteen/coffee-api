@@ -19,7 +19,7 @@ function getBrew(req, res, next) {
 function getBrews(req, res, next) {
     //pagination - must have page number > 0
     var pageNo = parseInt(req.query.pageNo);
-    var size = parseInt(req.query.size);
+    var size = (req.query.hasOwnProperty("size")) ? parseInt(req.query.size) : 100;
     if(pageNo < 0 || pageNo === 0) {
         res.status(500).json({
             "error": true,
