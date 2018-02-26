@@ -78,6 +78,17 @@ function deleteBrew(req, res, next) {
     })
     .catch( e => next(e));
 }
+function likeBrew(req, res, next) {
+    let brewId = parseInt(req.params.id);
+    db.result("UPDATE brew SET points = points + 1 WHERE brew_id = $1", brewId)
+    .then((result) => {
+        res.status(200).json({
+            status: "success",
+            message: result.command + " rows effected: " + result.rowCount 
+        });
+    })
+    .catch(e => next(e));
+}
 
 function updateBrew(req, res, next) {
 
@@ -93,5 +104,6 @@ module.exports = {
     getBrews: getBrews,
     editBrew: editBrew,
     deleteBrew: deleteBrew,
-    getBrewsByUser: getBrewsByUser
+    getBrewsByUser: getBrewsByUser,
+    likeBrew: likeBrew
 };
