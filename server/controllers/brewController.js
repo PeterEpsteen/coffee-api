@@ -17,7 +17,8 @@ function getBrew(req, res, next) {
         .catch(err => {return next(err)});
 }
 function getBrews(req, res, next) {
-    db.any('SELECT * FROM brew')
+    //chain to get user ID's
+    db.any('SELECT b.*, u.username FROM brew AS b INNER JOIN users as u ON b.user_id = u.id')
         .then(data => {
             res.status(200).json({
                 status:'success',
