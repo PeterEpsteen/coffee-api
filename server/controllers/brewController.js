@@ -84,7 +84,7 @@ function likeBrew(req, res, next) {
 
     const vote = {
         user_id: userID,
-        brew_id: brewId
+        brew_id: brewID
     };
     db.task(t => {
         return t.one("INSERT INTO votes (user_id, brew_id) VALUES ${user_id}, ${brew_id} RETURNING user_id", vote)
