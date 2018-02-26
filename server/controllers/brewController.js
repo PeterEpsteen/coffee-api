@@ -87,9 +87,9 @@ function likeBrew(req, res, next) {
         brew_id: brewID
     };
     db.task(t => {
-        return t.one("INSERT INTO votes (user_id, brew_id) VALUES (${user_id}, ${brew_id}) RETURNING user_id", vote)
+        return t.one("INSERT INTO votes (user_id, brew_id) VALUES (${user_id}, ${brew_id}) RETURNING brew_id", vote)
         .then((user) => {
-           return t.any("UPDATE brew SET points = points + 1 WHERE brew_id = $1", user.user_id);
+           return t.any("UPDATE brew SET points = points + 1 WHERE brew_id = $1", user.brew_id);
         });
     })
     .then(events => {
