@@ -79,16 +79,29 @@ function deleteBrew(req, res, next) {
     .catch( e => next(e));
 }
 function likeBrew(req, res, next) {
-    let brewId = parseInt(req.params.id);
-    db.result("UPDATE brew SET points = points + 1 WHERE brew_id = $1", brewId)
-    .then((result) => {
-        res.status(200).json({
-            status: "success",
-            message: result.command + " rows effected: " + result.rowCount 
+    let brewID = parseInt(req.params.id);
+    let userID = parseInt(req.params.userID);
+
+    const vote = {
+        user_id: userID,
+        brew_id: brewId
+    };
+    db.task(t => {
+        return t.one("INSERT INTO votes (user_id, brew_id) VALUES ${user_id}, ${brew_id} RETURNING user_id", vote)
+        .then((user) => {
+           return t.any("UPDATE brew SET points = points + 1 WHERE brew_id = $1", user.user_id);
         });
     })
-    .catch(e => next(e));
+    .then(events => {
+        res.status(200).json({
+            status: "success",
+            message: events
+        });
+    })
+    .catch(error => next(error))
+   
 }
+
 
 function updateBrew(req, res, next) {
 
