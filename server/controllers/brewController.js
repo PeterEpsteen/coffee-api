@@ -17,6 +17,7 @@ function getBrew(req, res, next) {
         .catch(err => {return next(err)});
 }
 function getBrews(req, res, next) {
+    //pagination - must have page number > 0
     var pageNo = parseInt(req.query.pageNo);
     var size = parseInt(req.query.size);
     if(pageNo < 0 || pageNo === 0) {
@@ -26,7 +27,7 @@ function getBrews(req, res, next) {
         });
     }
     req.query.offset = size * (pageNo - 1);
-    req.query.limit = size;
+    req.query.limit = (size > 0) ? size : 50;
     db.any('SELECT b.*, u.username FROM brew AS b INNER JOIN users as u ON b.user_id = u.id OFFSET ${offset} LIMIT ${limit}', req.query)
         .then(data => {
             res.status(200).json({
