@@ -17,8 +17,17 @@ function getBrew(req, res, next) {
         .catch(err => {return next(err)});
 }
 function getBrews(req, res, next) {
-    //chain to get user ID's
-    db.any('SELECT b.*, u.username FROM brew AS b INNER JOIN users as u ON b.user_id = u.id')
+    var pageNo = parseInt(req.query.pageNo);
+    var size = parseInt(req.query.size);
+    if(pageNo < 0 || pageNo === 0) {
+        res.status(500).json({
+            "error": true,
+            "message": "invalid page number"
+        });
+    }
+    req.query.offset = size * (pageNo - 1);
+    req.query.limit = size;
+    db.any('SELECT b.*, u.username FROM brew AS b INNER JOIN users as u ON b.user_id = u.id OFFSET ${offset} LIMIT ${limit}', req.query)
         .then(data => {
             res.status(200).json({
                 status:'success',
