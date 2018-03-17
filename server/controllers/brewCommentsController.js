@@ -17,14 +17,14 @@ function getBrewComments(req, res, next) {
 }
 
 function addBrewComment(req, res, next) {
+    let commentJson = JSON.parse(req.body.comment);
     let brewComment = {
-        brew_id: req.body.comment['brewID'],
-        user_id: req.body.comment['userID'],
-        comment_text: req.body.comment['text'],
-        comment_date: req.body.comment['date']
+        brew_id: commentJson['brewID'],
+        user_id: commentJson['userID'],
+        comment_text: commentJson['text'],
+        comment_date: commentJson['date']
     };
     console.log(brewComment);
-    console.log(req.body.comment.text);
     db.none('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date})', brewComment)
     .then(() => {res.status(200).json({
             status: "success",
