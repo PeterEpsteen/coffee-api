@@ -78,6 +78,33 @@ function deleteBrew(req, res, next) {
     })
     .catch( e => next(e));
 }
+function likeBrew(req, res, next) {
+    let brewID = parseInt(req.params.id);
+    let userID = parseInt(req.params.userID);
+
+    const vote = {
+        user_id: userID,
+        brew_id: brewID
+    };
+    db.task(t => {
+        return t.one("INSERT INTO votes (user_id, brew_id) VALUES (${user_id}, ${brew_id}) RETURNING brew_id", vote)
+        .then((user) => {
+           return t.any("UPDATE brew SET points = points + 1 WHERE brew_id = $1", user.brew_id);
+        });
+    })
+    .then(events => {
+        res.status(200).json({
+            status: "success",
+            message: events
+        });
+    })
+    .catch(error => {
+        console.log(error);
+        return next(error);
+    })
+   
+}
+
 
 function updateBrew(req, res, next) {
 
@@ -93,5 +120,6 @@ module.exports = {
     getBrews: getBrews,
     editBrew: editBrew,
     deleteBrew: deleteBrew,
-    getBrewsByUser: getBrewsByUser
+    getBrewsByUser: getBrewsByUser,
+    likeBrew: likeBrew
 };
