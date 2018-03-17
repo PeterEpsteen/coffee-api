@@ -20,9 +20,11 @@ function addBrewComment(req, res, next) {
     let brewComment = {
         brew_id: req.body.comment['brewID'],
         user_id: req.body.comment['userID'],
-        comment_text: req.body.comment.text,
-        comment_date: req.body.comment.date
+        comment_text: req.body.comment['text'],
+        comment_date: req.body.comment['date']
     };
+    console.log(brewComment);
+    console.log(req.body.comment);
     db.none('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date})', brewComment)
     .then(() => {res.status(200).json({
             status: "success",
