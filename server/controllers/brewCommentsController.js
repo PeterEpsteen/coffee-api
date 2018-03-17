@@ -25,20 +25,13 @@ function addBrewComment(req, res, next) {
         comment_date: commentJson['date']
     };
     console.log(brewComment);
-    db.task(t => {
-        return t.one('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date}) RETURNING brew_id', brewComment)
-        .then((brew) => {
-            return t.any("UPDATE brew SET comments = comments + 1 WHERE brew_id = $1", brew.brew_id);
-        });
-    })
+    db.none('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date})', brewComment)
     .then(() => {res.status(200).json({
             status: "success",
             message: "successfully inserted brew comment: " + req.body.comment.text
         });
     })
     .catch(err => next(err));
-
-     // db.none('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date})', brewComment)
 }
 
 function deleteBrewComment(req, res, next) {

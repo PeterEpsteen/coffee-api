@@ -22,7 +22,7 @@ function getUsers(req, res, next) {
 
 function getUser(req, res, next) {
     let userID = parseInt(req.params.id);
-    db.one('SELECT id, username, points FROM users where id = $1', userID)
+    db.one('SELECT e.*, l.comment_count FROM (SELECT u.id as user_id, u.username, SUM(b.points) AS points, COUNT(b.brew_id) AS brew_count FROM users AS u LEFT JOIN brew AS b ON b.user_id = u.id where u.id = $1 GROUP BY u.id)  as e FULL JOIN (SELECT SUM(z.comments) as comment_count, z.user_id as user_id FROM (SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.user_id = $1 GROUP BY b.brew_id ORDER BY b.brew_id) as z GROUP BY z.user_id) as l on l.user_id = e.user_id;', userID)
         .then(data => {
             res.status(200).json({
                 status:'success',   
@@ -31,6 +31,10 @@ function getUser(req, res, next) {
             });
         })
         .catch(err => {return next(err)});
+
+        //SELECT SUM(z.comments) FROM (SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.user_id = 92 GROUP BY b.brew_id ORDER BY b.brew_id) as z GROUP BY z.user_id
+
+        //SELECT e.*, l.comment_count FROM (SELECT u.id as user_id, u.username, SUM(b.points) AS points, COUNT(b.brew_id) AS brew_count FROM users AS u LEFT JOIN brew AS b ON b.user_id = u.id where u.id = 92 GROUP BY u.id)  as e FULL JOIN (SELECT SUM(z.comments) as comment_count, z.user_id as user_id FROM (SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.user_id = 92 GROUP BY b.brew_id ORDER BY b.brew_id) as z GROUP BY z.user_id) as l on l.user_id = e.id;
 }
 
 function addUser(req, res, next){
