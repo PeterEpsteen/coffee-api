@@ -28,7 +28,7 @@ function addBrewComment(req, res, next) {
     db.task(t => {
         return t.one('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date}) RETURNING brew_id', brewComment)
         .then((brew) => {
-            return t.any("UPDATE brew SET comments = comments+1 WHERE brew_id = $1", brew.brew_id);
+            return t.any("UPDATE brew SET comments = comments + 1 WHERE brew_id = $1", brew.brew_id);
         });
     })
     .then(() => {res.status(200).json({
