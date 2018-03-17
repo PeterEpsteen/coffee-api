@@ -53,7 +53,7 @@ function addBrew(req, res, next) {
 
 function getBrewsByUser(req, res, next) {
     let userID = parseInt(req.params.id);
-    db.any('SELECT * FROM brew WHERE user_id = $1;', userID)
+    db.any('SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.user_id = $1 GROUP BY b.brew_id ORDER BY b.brew_id;', userID)
     .then(data => {
         res.status(200).json({
             status:'success',
