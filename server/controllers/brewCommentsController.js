@@ -24,7 +24,7 @@ function addBrewComment(req, res, next) {
         comment_date: req.body.comment['date']
     };
     console.log(brewComment);
-    console.log(req.body.comment);
+    console.log(req.body.comment.text);
     db.none('INSERT INTO brew_comment (brew_id, user_id, comment_text, comment_date) VALUES ( ${brew_id}, ${user_id}, ${comment_text}, ${comment_date})', brewComment)
     .then(() => {res.status(200).json({
             status: "success",
