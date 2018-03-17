@@ -6,7 +6,7 @@ const db = require('../config/database');
 //--------------Brew----------------------/
 function getBrew(req, res, next) {
     let brewId = parseInt(req.params.id);
-    db.one('SELECT * FROM brew where brew_id = $1', brewId)
+    db.one('SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b INNER JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.brew_id = $1 GROUP BY b.brew_id ORDER BY b.brew_id;', brewId)
         .then(data => {
             res.status(200).json({
                 status:'success',
