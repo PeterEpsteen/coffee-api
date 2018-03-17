@@ -6,7 +6,7 @@ const db = require('../config/database');
 //--------------Brew----------------------/
 function getBrew(req, res, next) {
     let brewId = parseInt(req.params.id);
-    db.one('SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b INNER JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.brew_id = $1 GROUP BY b.brew_id ORDER BY b.brew_id;', brewId)
+    db.one('SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id WHERE b.brew_id = $1 GROUP BY b.brew_id ORDER BY b.brew_id;', brewId)
         .then(data => {
             res.status(200).json({
                 status:'success',
@@ -28,7 +28,7 @@ function getBrews(req, res, next) {
     }
     req.query.offset = size * (pageNo - 1);
     req.query.limit = (size > 0) ? size : 50;
-    db.any('SELECT b.*, u.username FROM brew AS b INNER JOIN users as u ON b.user_id = u.id OFFSET ${offset} LIMIT ${limit}', req.query)
+    db.any('(SELECT b.*, u.username FROM (SELECT b.*, COUNT(c.brew_id) AS comments FROM brew AS b LEFT JOIN brew_comment AS c ON c.brew_id = b.brew_id GROUP BY b.brew_id) AS b INNER JOIN users as u ON b.user_id = u.id) OFFSET ${offset} LIMIT ${limit}', req.query)
         .then(data => {
             res.status(200).json({
                 status:'success',
