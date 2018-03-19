@@ -61,7 +61,6 @@ function addBrew(req, res, next) {
     .catch(err => {
         //add username to beginning of brew
         if(err.message.includes('duplicate')) {
-            req.body.brew_name = req.body.user
             db.task(t => {
                 return t.one("SELECT * FROM users WHERE id = $1", req.body.user_id)
                 .then((user) => {
