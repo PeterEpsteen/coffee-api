@@ -58,7 +58,35 @@ function addBrew(req, res, next) {
             message: `Successfully inserted brew: ${req.body["brew_name"]}`
         });
     })
-    .catch(err => {return next(err);});
+    .catch(err => {
+        //add username to beginning of brew
+        if(err.message.includes('duplicate')) {
+            req.body.brew_name = req.body.user
+            db.task(t => {
+                return t.one("SELECT * FROM users WHERE id = $1", req.body.user_id)
+                .then((user) => {
+                    req.body.brew_name = user.username + "'s " + req.body.brew_name;
+                   return t.none('INSERT INTO brew (user_id, brew_name, brew_date, '+
+                   'brew_method, water_units, coffee_units, water_metric, coffee_metric, notes, grind, bloom_time, brew_time, temperature) VALUES (${user_id}, ${brew_name}, ${brew_date}, '+
+                   '${brew_method}, ${water_units}, ${coffee_units}, ${water_metric}, ${coffee_metric}, ${notes}, ${grind}, ${bloom_time}, ${brew_time}, ${temperature})', req.body);
+                });
+            })
+            .then( () => {
+                res.status(200).json({
+                    status: "success",
+                    message: "Succesfully inserted brew " + req.body.brew_name
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                return next(error);
+            })
+        }
+
+        else {
+            return next(err);
+        }
+    });
 }
 
 function getBrewsByUser(req, res, next) {
