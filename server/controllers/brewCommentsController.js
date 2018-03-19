@@ -6,7 +6,7 @@ const db = require('../config/database');
 //-----------Brew Comments-----------------------//
 function getBrewComments(req, res, next) {
     let brewID = parseInt(req.params.brewID);
-    db.any('SELECT * from brew_comment where brew_id = $1', brewID)
+    db.any('SELECT b.*, u.username from brew_comment as b INNER JOIN users as u ON u.id = b.user_id where brew_id = $1;', brewID)
     .then(data => {
         res.status(200).json({
             status:'success',
