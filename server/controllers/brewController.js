@@ -148,7 +148,7 @@ function downloadBrew(req, res, next) {
     if(typeof brew_id === 'undefined')
         res.status(404).json({message: "No user id or brew id provided."});
     
-    db.result("UPDATE brew SET downloads = downloads + 1 WHERE brew_id = $1")
+    db.result("UPDATE brew SET downloads = downloads + 1 WHERE brew_id = $1", brew_id)
     .then((result) => {
         console.log(result.command + ": " + result.rowCount);
         if(result.rowCount > 0) {
