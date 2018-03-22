@@ -143,6 +143,33 @@ function likeBrew(req, res, next) {
    
 }
 
+function downloadBrew(req, res, next) {
+    let brew_id = parseInt(req.params.brew_id);
+    if(typeof brew_id === 'undefined')
+        res.status(404).json({message: "No user id or brew id provided."});
+    
+    db.result("UPDATE brew SET downloads = downloads + 1 WHERE brew_id = $1")
+    .then((result) => {
+        console.log(result.command + ": " + result.rowCount);
+        if(result.rowCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                message: "Downloaded brew"
+            });
+        }
+        else {
+            res.status(500).json({
+                status: "Error",
+                message: result
+            });
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        return next(error);
+    });
+}
+
 
 function updateBrew(req, res, next) {
 
@@ -159,5 +186,6 @@ module.exports = {
     editBrew: editBrew,
     deleteBrew: deleteBrew,
     getBrewsByUser: getBrewsByUser,
-    likeBrew: likeBrew
+    likeBrew: likeBrew,
+    downloadBrew: downloadBrew
 };

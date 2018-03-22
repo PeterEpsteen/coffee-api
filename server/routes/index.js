@@ -38,6 +38,7 @@ router.get('/brews/user/:id', brewController.getBrewsByUser);
 router.get('/brews/:id', brewController.getBrew);
 router.get('/brews', brewController.getBrews);
 router.put('/brews/like/:id/:userID', brewController.likeBrew);
+router.put('/brews/download/:brew_id', brewController.downloadBrew);
 router.post('/brews', brewController.addBrew);
 router.delete('/brews/:userID/:brewName', brewController.deleteBrew);
 
