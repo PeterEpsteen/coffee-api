@@ -16,7 +16,7 @@ router.use((req, res, next) => {
   if (token) {
     jwt.verify(token, req.app.get('superSecret'), (err, decoded) => {
       if(err) {
-        return res.json({success: false, message: "Failed authentication"});
+        return res.status(403).json({success: false, message: "Failed authentication"});
       }
         else {
           console.log("token verified: " + token);
